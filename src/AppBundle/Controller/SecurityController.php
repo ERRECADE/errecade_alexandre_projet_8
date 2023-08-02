@@ -17,7 +17,14 @@ class SecurityController extends Controller
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
+        // add sur function souhaitez
+        // if ($this->container->has('debug.stopwatch')) {
+        //     $stopwatch = $this->get('debug.stopwatch');
 
+        //     $stopwatch->start('sleep action');
+        //     sleep(5);
+        //     $stopwatch->stop('sleep action');
+        // }
         return $this->render('security/login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
