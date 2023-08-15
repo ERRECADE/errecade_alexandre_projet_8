@@ -2,16 +2,12 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Entity\User;
+use App\Entity\User;
 use App\Tests\UserConnectAbstract;
-use AppBundle\Form\UserType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserControllerTest  extends UserConnectAbstract
 {
-    public function testListAction()
+    public function testListAction() : void
     {
         $client = $this->UserLogged();
         $crawler = $client->request('GET', '/users');
@@ -22,7 +18,7 @@ class UserControllerTest  extends UserConnectAbstract
         static::assertGreaterThan(0, $usersCount);
     }
 
-    public function testUserCreate()
+    public function testUserCreate() : void
     {
         $client = $this->UserLogged();
         $entityManager = $client->getContainer()->get('doctrine')->getManager();
@@ -48,7 +44,7 @@ class UserControllerTest  extends UserConnectAbstract
 
     }
 
-    public function testUserEdit()
+    public function testUserEdit() : void
     {
         $client = $this->UserLogged();
         $entityManager = $client->getContainer()->get('doctrine')->getManager();

@@ -22,14 +22,18 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login_check', name: 'login_check')]
-   // @codeCoverageIgnore // comment bien le mmetre en form
+    /**
+     * @codeCoverageIgnore
+     */
     public function loginCheck() :void
     {
         // This code is never executed.
     }
 
     #[Route('/logout', name: 'logout')]
-    //@codeCoverageIgnore // comment bien le mmetre en form
+    /**
+     * @codeCoverageIgnore
+     */
     public function logoutCheck() :void
     {
         // This code is never executed.
