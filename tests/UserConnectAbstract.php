@@ -1,31 +1,31 @@
 <?php
 
-namespace Tests;
+namespace  App\Tests;
 
-use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 abstract class UserConnectAbstract extends WebTestCase
 {
     public function UserLogged()
     {
         $client = static::createClient();
-       
 
+        //trouver la version login uSER pour les test en symfony 
         $crawler = $client->request('GET', '/login');
 
         $buttonCrawlerNode = $crawler->selectButton('Se connecter');
-        $form = $buttonCrawlerNode->form();
         $form = $buttonCrawlerNode->form([
-            '_username' => 'testAlex',
-            '_password' => 'test'
+            '_username' => 'test1@test.fr',
+            '_password' => '1234'
         ]);
 
         $client->submit($form);
+        //var_dump($form);
+        // dd();
         $client->followRedirect();
         
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        static::assertEquals(200, $client->getResponse()->getStatusCode());
 
         return $client;
     }

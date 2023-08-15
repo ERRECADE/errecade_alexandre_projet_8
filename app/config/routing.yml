@@ -1,8 +1,0 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
-
-test_coverage:
-    path: /test-coverage
-    defaults:
-        _controller: AppBundle\Controller\TestCoverageController::index
