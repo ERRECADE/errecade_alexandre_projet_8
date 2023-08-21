@@ -4,7 +4,9 @@
     {% if error %}
         <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-
+    {% for flashMessage in app.flashes('error') %}
+        <div class="alert alert-danger">{{ flashMessage }}</div>
+    {% endfor %}
     <form action="{{ path('login_check') }}" method="post">
         <label for="username">Email d'utilisateur :</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}" />

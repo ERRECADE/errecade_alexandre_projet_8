@@ -13,8 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
+#[IsGranted('ROLE_ADMIN')]
 class UserController extends AbstractController
 {
     #[Route('/users', name: 'user_list')]
@@ -30,11 +31,14 @@ class UserController extends AbstractController
         $form = $this->createForm(\App\Form\UserType::class, $user);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid())  {
             $password = $userPasswordHasherInterface->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 
+            // if($user->getRoles() == 'ROLE_USER'){
+            //     $user->setRoles($user->getRoles()); 
+            // }
+            // $user->setRoles($user->getRoles());
             $em->persist($user);
             $em->flush();
 
@@ -46,6 +50,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}/edit', name: 'user_edit')]
+    // #[IsGranted('edit')]
     public function editAction(User $user, Request $request,EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasherInterface)
     {
         $form = $this->createForm(UserType::class, $user);
@@ -55,6 +60,7 @@ class UserController extends AbstractController
          if ($form->isSubmitted() && $form->isValid()){
             $password = $userPasswordHasherInterface->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
+            // $user->setRoles($user->getRoles());
 
             $em->flush();
 
