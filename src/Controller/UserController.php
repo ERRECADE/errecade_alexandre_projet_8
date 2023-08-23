@@ -13,8 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-// use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverter;
+
 
 class UserController extends AbstractController
 {
