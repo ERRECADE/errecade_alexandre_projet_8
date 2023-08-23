@@ -2,8 +2,9 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Entity\Task;
-use Tests\UserConnectAbstract;
+use App\Entity\Task;
+use App\Tests\UserConnectAbstract;
+
 
 class TaskControllerTest extends UserConnectAbstract
 {
@@ -15,8 +16,8 @@ class TaskControllerTest extends UserConnectAbstract
     $link = $client->getCrawler()->selectLink('Créer une nouvelle tâche');
     $crawler = $client->click($link->link());
 
-    $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    $this->assertEquals('/tasks/create', $client->getRequest()->getPathInfo());
+    static::assertEquals(200, $client->getResponse()->getStatusCode());
+    static::assertEquals('/tasks/create', $client->getRequest()->getPathInfo());
 
 
 }
@@ -39,8 +40,8 @@ public function testTaskCreate()
     $client->submit($form);
     $client->followRedirect();
     
-    $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    $this->assertEquals('/tasks', $client->getRequest()->getPathInfo());
+    static::assertEquals(200, $client->getResponse()->getStatusCode());
+    static::assertEquals('/tasks', $client->getRequest()->getPathInfo());
 }
 
 public function testTaskDelete()
@@ -58,10 +59,10 @@ public function testTaskDelete()
     $url = '/tasks/' . $taskId . '/delete';
 
     $crawler = $client->request('GET', $url);
-    $this->assertTrue($client->getResponse()->isRedirect('/tasks'));
+    static::assertTrue($client->getResponse()->isRedirect('/tasks'));
 
     $deletedTask = $entityManager->getRepository(Task::class)->find($taskId);
-    $this->assertNull($deletedTask);
+    static::assertNull($deletedTask);
 
     $crawler = $client->request('GET', '/tasks');
 }
@@ -75,7 +76,7 @@ public function testToggleTaskAction()
 
     $task->setTitle('Titre de la tâche');
     $task->setContent('Contenu de la tâche');
-    $task->isDone(); 
+    $task->isIsDone(); 
     $entityManager->persist($task);
     $entityManager->flush();
 
@@ -83,17 +84,14 @@ public function testToggleTaskAction()
     $url = '/tasks/' . $taskId . '/toggle';
 
     $crawler = $client->request('GET', $url);
-    $this->assertTrue($client->getResponse()->isRedirect('/tasks'));
+    static::assertTrue($client->getResponse()->isRedirect('/tasks'));
 
     $updatedTask = $entityManager->getRepository(Task::class)->find($taskId);
-    $this->assertTrue($updatedTask->isDone(true)); 
+    static::assertTrue($updatedTask->isDone(true)); 
 
     $flashMessages = $client->getContainer()->get('session')->getFlashBag()->get('success');
-    $this->assertNotEmpty($flashMessages); 
-    $this->assertEquals(
-        sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()),
-        $flashMessages[0]
-    );
+    static::assertNotEmpty($flashMessages); 
+    static::assertEquals(sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()), $flashMessages[0]);
 
     
 }
@@ -105,14 +103,14 @@ public function testEditAction()
 
     $existingTask = $entityManager->getRepository(Task::class)->findOneBy([]);
 
-    $this->assertNotNull($existingTask, 'Aucune tâche trouvée dans la base de données pour le test.');
+    static::assertNotNull($existingTask, 'Aucune tâche trouvée dans la base de données pour le test.');
 
     $taskId = $existingTask->getId();
     $url = '/tasks/' . $taskId . '/edit';
 
     $crawler = $client->request('GET', $url);
 
-    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    static::assertEquals(200, $client->getResponse()->getStatusCode());
 
     $form = $crawler->selectButton('Modifier')->form([
         'task[title]' => 'Nouveau titre de la tâche',
@@ -121,15 +119,15 @@ public function testEditAction()
 
     $crawler = $client->submit($form);
 
-    $this->assertTrue($client->getResponse()->isRedirect('/tasks'));
+    static::assertTrue($client->getResponse()->isRedirect('/tasks'));
 
     $updatedTask = $entityManager->getRepository(Task::class)->find($taskId);
-    $this->assertEquals('Nouveau titre de la tâche', $updatedTask->getTitle());
-    $this->assertEquals('Nouveau contenu de la tâche', $updatedTask->getContent());
+    static::assertEquals('Nouveau titre de la tâche', $updatedTask->getTitle());
+    static::assertEquals('Nouveau contenu de la tâche', $updatedTask->getContent());
 
     $flashMessages = $client->getContainer()->get('session')->getFlashBag()->get('success');
-    $this->assertNotEmpty($flashMessages);
-    $this->assertEquals('La tâche a bien été modifiée.', $flashMessages[0]);
+    static::assertNotEmpty($flashMessages);
+    static::assertEquals('La tâche a bien été modifiée.', $flashMessages[0]);
 }
 
 

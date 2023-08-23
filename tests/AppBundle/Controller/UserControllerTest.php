@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use Tests\UserConnectAbstract;
+use App\Tests\UserConnectAbstract;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,10 +16,10 @@ class UserControllerTest  extends UserConnectAbstract
         $client = $this->UserLogged();
         $crawler = $client->request('GET', '/users');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        static::assertEquals(200, $client->getResponse()->getStatusCode());
 
         $usersCount = $crawler->filter('.table')->count();
-        $this->assertGreaterThan(0, $usersCount);
+        static::assertGreaterThan(0, $usersCount);
     }
 
     public function testUserCreate()
@@ -29,7 +29,7 @@ class UserControllerTest  extends UserConnectAbstract
 
         $crawler = $client->request('GET', '/users/create');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        static::assertEquals(200, $client->getResponse()->getStatusCode());
         $uniqueUsername = 'testUser_' . uniqid();
         $uniqueEmail = uniqid() . '@example.com';
     
@@ -40,11 +40,11 @@ class UserControllerTest  extends UserConnectAbstract
             'user[email]' => $uniqueEmail,
         ]);
         $client->submit($form);
-        $this->assertTrue($client->getResponse()->isRedirect());
+        static::assertTrue($client->getResponse()->isRedirect());
 
         $crawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/users', $client->getRequest()->getPathInfo());
+        static::assertEquals(200, $client->getResponse()->getStatusCode());
+        static::assertEquals('/users', $client->getRequest()->getPathInfo());
 
     }
 
@@ -55,14 +55,14 @@ class UserControllerTest  extends UserConnectAbstract
 
         $existingUser = $entityManager->getRepository(User::class)->findOneBy([]);
     
-        $this->assertNotNull($existingUser, 'Aucune tâche trouvée dans la base de données pour le test.');
+        static::assertNotNull($existingUser, 'Aucune tâche trouvée dans la base de données pour le test.');
     
         $UserId = $existingUser->getId();
         $url = '/users/' . $UserId . '/edit';
     
         $crawler = $client->request('GET', $url);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        static::assertEquals(200, $client->getResponse()->getStatusCode());
 
         $uniqueEmail = $existingUser->getEmail();
 
@@ -75,13 +75,13 @@ class UserControllerTest  extends UserConnectAbstract
     
         $crawler = $client->submit($form);
     
-        $this->assertTrue($client->getResponse()->isRedirect('/users'));
+        static::assertTrue($client->getResponse()->isRedirect('/users'));
 
         $crawler = $client->followRedirect();
 
         $updatedUser = $entityManager->getRepository(User::class)->find($UserId);
-        $this->assertEquals('je change', $updatedUser->getUsername());
-        $this->assertEquals($uniqueEmail, $updatedUser->getEmail());
+        static::assertEquals('je change', $updatedUser->getUsername());
+        static::assertEquals($uniqueEmail, $updatedUser->getEmail());
     }
     
 
