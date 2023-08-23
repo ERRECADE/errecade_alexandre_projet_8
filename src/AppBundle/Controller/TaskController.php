@@ -15,6 +15,14 @@ class TaskController extends Controller
      */
     public function listAction()
     {
+        // add sur function souhaitez
+        // if ($this->container->has('debug.stopwatch')) {
+        //     $stopwatch = $this->get('debug.stopwatch');
+
+        //     $stopwatch->start('sleep action');
+        //     sleep(5);
+        //     $stopwatch->stop('sleep action');
+        // }
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
     }
 
@@ -35,10 +43,8 @@ class TaskController extends Controller
             $em->flush();
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
-
             return $this->redirectToRoute('task_list');
         }
-
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
@@ -58,7 +64,6 @@ class TaskController extends Controller
 
             return $this->redirectToRoute('task_list');
         }
-
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
@@ -74,7 +79,6 @@ class TaskController extends Controller
         $this->getDoctrine()->getManager()->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
-
         return $this->redirectToRoute('task_list');
     }
 
@@ -88,7 +92,6 @@ class TaskController extends Controller
         $em->flush();
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
-
         return $this->redirectToRoute('task_list');
     }
 }

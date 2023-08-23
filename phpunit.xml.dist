@@ -28,4 +28,7 @@
             </exclude>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="web/test-coverage" charset="UTF-8" yui="true" highlight="false"/>
+    </logging>
 </phpunit>

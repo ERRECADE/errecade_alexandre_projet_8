@@ -40,7 +40,6 @@ class UserController extends Controller
 
             return $this->redirectToRoute('user_list');
         }
-
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
@@ -63,7 +62,6 @@ class UserController extends Controller
 
             return $this->redirectToRoute('user_list');
         }
-
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 }
