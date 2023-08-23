@@ -5,6 +5,9 @@
 
 {% block body %}
     <div class="row">
+    {% for flashMessage in app.flashes('error') %}
+    <div class="alert alert-danger">{{ flashMessage }}</div>
+    {% endfor %}
         {{ form_start(form, {'action' : path('user_create')}) }}
             {{ form_widget(form) }}
 

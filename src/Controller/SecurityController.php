@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SecurityController extends AbstractController
 {
@@ -22,14 +23,18 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login_check', name: 'login_check')]
-   // @codeCoverageIgnore // comment bien le mmetre en form
+    /**
+     * @codeCoverageIgnore
+     */
     public function loginCheck() :void
     {
         // This code is never executed.
     }
 
     #[Route('/logout', name: 'logout')]
-    //@codeCoverageIgnore // comment bien le mmetre en form
+    /**
+     * @codeCoverageIgnore
+     */
     public function logoutCheck() :void
     {
         // This code is never executed.

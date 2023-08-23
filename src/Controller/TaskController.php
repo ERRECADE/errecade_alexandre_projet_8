@@ -9,11 +9,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaskController extends AbstractController
 {
     #[Route('/tasks', name: 'task_list')]
-    public function listAction(TaskRepository $taskRepository)
+    #[IsGranted('ROLE_USER')]
+    public function listAction(TaskRepository $taskRepository): Response
     {
         // add sur function souhaitez
         // if ($this->container->has('debug.stopwatch')) {
@@ -29,7 +31,14 @@ class TaskController extends AbstractController
     #[Route('/tasks/create', name: 'task_create')]
     public function createAction(Request $request, EntityManagerInterface $em)
     {
+        
         $task = new Task();
+        if($this->getUser() != null){
+            $user = $this->getUser();
+
+            $task->setUser($user);
+        }
+
         $form = $this->createForm(\App\Form\TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -46,6 +55,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
+    #[IsGranted('edit','task')]
     public function editAction(Task $task, Request $request,EntityManagerInterface $em)
     {
         $form = $this->createForm(\App\Form\TaskType::class, $task);
@@ -76,6 +86,8 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
+    // #[IsGranted('ROLE_USER')]
+    #[IsGranted('edit','task')]
     public function deleteTaskAction(Task $task,EntityManagerInterface $em)
     {
         $em->remove($task);

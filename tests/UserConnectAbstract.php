@@ -3,6 +3,7 @@
 namespace  App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Repository\UserRepository;
 
 
 abstract class UserConnectAbstract extends WebTestCase
@@ -10,22 +11,27 @@ abstract class UserConnectAbstract extends WebTestCase
     public function UserLogged()
     {
         $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['email' => 'admin0@test.fr']);
+        $client->loginUser($testUser);
+        $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        //trouver la version login uSER pour les test en symfony 
-        $crawler = $client->request('GET', '/login');
+        return $client;
+    }
+    public function UserLoggedUser()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
 
-        $buttonCrawlerNode = $crawler->selectButton('Se connecter');
-        $form = $buttonCrawlerNode->form([
-            '_username' => 'test1@test.fr',
-            '_password' => '1234'
-        ]);
+        $testUser = $userRepository->findOneBy(['email' =>'user0@test.fr']);
 
-        $client->submit($form);
-        //var_dump($form);
-        // dd();
-        $client->followRedirect();
-        
-        static::assertEquals(200, $client->getResponse()->getStatusCode());
+        $client->loginUser($testUser);
+
+        $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         return $client;
     }
