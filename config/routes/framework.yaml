@@ -2,6 +2,3 @@ when@dev:
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
         prefix: /_error
-
-
-# rajoute des route pour accéder au pages d'erreures en dev  
