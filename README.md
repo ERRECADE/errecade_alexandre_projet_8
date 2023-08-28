@@ -12,10 +12,6 @@ composer require phpunit/phpunit
 Lancer les test :  vendor/bin/phpunit ,  vendor/bin/phpunit tests/AppBundle/Controller/DefaultControllerTest.php
 
 # Projet ToDoList
-
-Ce projet fait partie du défi "Améliorez un Projet Existant" d'OpenClassrooms.
-Lien vers le défi : [Défi Améliorez un Projet Existant](https://openclassrooms.com/projects/ameliorer-un-projet-existant-1)
-
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
